@@ -89,7 +89,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\seo-report.png" />
+    <None Include="Resources\negocios-y-finanzas.png" />
+    <None Include="Resources\proceso.png" />
+    <None Include="Resources\curriculum.png" />
+    <None Include="Resources\acerca-de.png" />
     <Content Include="Resources\bootstrap.css" />
+    <None Include="Resources\trabajo.png" />
+    <None Include="Resources\salvar.png" />
+    <None Include="Resources\cerrar.png" />
     <None Include="Resources\icons8-documents-folder-48.png" />
     <None Include="Resources\fileIcon.png" />
     <None Include="Resources\icons8-color-48.png" />

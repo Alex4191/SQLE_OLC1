@@ -18,12 +18,12 @@ namespace OLC1_SQL
         public List<Tabla> TableList;
         public List<Conditions> condit;
         int InsertTable;
+        int position_D;
         int value_column_insert;
         int contador;
         int contador2;
         int contador3;
-        int contador4;
-        int contador5;
+        int contadorVerify;
         bool Flag_Success;
         String name_delete;
         Tabla BackUp;
@@ -37,8 +37,7 @@ namespace OLC1_SQL
             TableList = new List<Tabla>();
             contador = 0;
             contador2 = 0;
-            contador4 = 0;
-            contador5 = 0;
+           
         }
         
 
@@ -72,9 +71,9 @@ namespace OLC1_SQL
             }
             else if (post_analisis.GetCorr()==30)
             {
-               
-               
 
+
+                contadorVerify = 0;
                 match(30);//Eliminar
                 S2();
                
@@ -84,16 +83,14 @@ namespace OLC1_SQL
             {
                 match(35);//ACTUALIZAR
                 S3();
-                Console.WriteLine("___________");
-                Console.WriteLine("entro S3" + " " + contador4);
+               
                 START();
                
             }else if (post_analisis.GetCorr()==37)
             {
                 match(37);//SELECCIONAR
                 S4();
-                Console.WriteLine("___________");
-                Console.WriteLine("entro S4" + " " + contador5);
+                
                 START();
             }
             else
@@ -755,7 +752,7 @@ namespace OLC1_SQL
         public void Multi_Elimination(List<Conditions> l,int contador)
         {
 
-
+            Tabla temp_table = GetTableName(name_delete);
 
             if (contador > 0)
             {
@@ -764,25 +761,27 @@ namespace OLC1_SQL
             else//NO HAY OR'S
             {
                 if (l.Count == 1){
-
+                    int temp = Verify_Conditions(l.Count(), l, temp_table);
+                    if (temp > 0)
+                    {
+                        Delete_Row(position_D, temp_table);
+                        position_D = 0;
+                    }
                 }
                 else
-                {
-                        Conditions c = l.ElementAt(0);
-                        Console.WriteLine(c.getGroup());
-                        int temp = Verify_Conditions(l.Count(), l, name_delete);
-                        if (temp == l.Count())
+                { 
+                   int temp = Verify_Conditions(l.Count(), l, temp_table);
+                        
+                    if (temp == l.Count())
                         {
-                            Console.WriteLine("CUMPLIO CON LOS Y");
+                        Delete_Row(position_D, temp_table);//call's a delete Row method
+                            position_D = 0;
                         }
                         else
                         {
                             Console.WriteLine("No cumplio todas las Y");
-                            Tabla tm = GetTableName(name_delete);
-                            tm = BackUp;
+                           
                         }
-
-                    
 
                 }
                 
@@ -795,35 +794,47 @@ namespace OLC1_SQL
         }
 
 
-
-
-
-        public int Verify_Conditions(int counter,List<Conditions> c,String name)
+        public int Verify_Conditions(int counter,List<Conditions> c, Tabla temp_table)
         {
+            
             int temp_counter=0;
             bool Succes = false;
-            Tabla temp = GetTableName(name);
+            Tabla temp = temp_table;
 
             BackUp = temp;
 
-            Console.WriteLine(temp.getName());
             if (temp != null)
             {
                 for (int i = 0; i <counter ; i++)
                 {
                     
                     Conditions c_temp = c.ElementAt(i);
+                    Console.WriteLine("se envia" + c_temp.getValue());
                     String identificador = c_temp.getId();
                     int Condicion_valor = c_temp.getCondition();
                     String temp_value = c_temp.getValue();
                     if (Condicion_valor == 12)
-                    {
-                        
-                        Succes = Verify_Sub_Conditions(identificador, Condicion_valor, temp_value,temp);
+                    {/*case "MENOR":
+                    return 10;
+                case "MAYOR":
+                    return 11;
+                case "IGUAL":
+                    return 12;
+                case "MAYOR IGUAL":
+                    return 13;
+                case "MENOR IGUAL":
+                    return 14;
+                case "DISTINTO":
+                    return 15;*/
+
+                        Succes = Verify_Sub_Conditions_Equals(identificador, Condicion_valor, temp_value,temp);
                         if (Succes == true)
                         {
                             temp_counter++;
                         }
+                    }else if (Condicion_valor == 13)
+                    {
+
                     }
                     
                 }
@@ -834,8 +845,8 @@ namespace OLC1_SQL
 
 
 
-        public bool Verify_Sub_Conditions(String id, int c, String t,Tabla tmp_t) {
-            
+        public bool Verify_Sub_Conditions_Equals(String id, int c, String t,Tabla tmp_t) {
+          
             bool temp = false;
            
             List<Entity_Table> ls = tmp_t.getList();
@@ -847,25 +858,50 @@ namespace OLC1_SQL
                     ArrayList ar = entity_t.getDataArray();
                     for (int j = 0; j < ar.Count; j++)
                     {
-                       Console.WriteLine(t+""+ ar[j].ToString());
-                        if(t==ar[j].ToString())
+                        if (contadorVerify != 0)
                         {
+                            if (t == ar[position_D].ToString())
+                            {
 
-                           // ar[j] = null;
-                            return temp = true;
-                            
+                                return temp = true;
+                            }
+                            else
+                            {
+                                return temp = false;
+                            }
                         }
+                        else
+                        {
+                            if (t == ar[j].ToString())
+                            {
+                                position_D = j;
+                                contadorVerify++;
+                                return temp = true;
+
+                            }
+                        }
+                       
                         
                     }
                     break;
                 }
-
+               
             }
             return temp;
         }
         
 
-        
+        public void Delete_Row(int D_positions,Tabla tmp_t)
+        {
+            List<Entity_Table> tb = tmp_t.getList();
+            for (int i = 0; i < tb.Count; i++)
+            {
+                Entity_Table entity = tb.ElementAt(i);
+                ArrayList a_temp = entity.getDataArray();
+                a_temp[D_positions] = null;
+            }
+
+        }
 
 
         public String getErrorType(int p)

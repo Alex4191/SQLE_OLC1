@@ -312,7 +312,7 @@ namespace OLC1_SQL
                     case 15:
                         if (AscciCode >= 48 && AscciCode <= 57)//if is number after number
                         {
-                            state = 16;
+                            state = 37;
                             AuxLex += chain;
                         }
                         else
@@ -579,6 +579,20 @@ namespace OLC1_SQL
                         i -= 1;
                         state = 0;
                         row++;
+                        break;
+                    case 37:
+                        if (AscciCode >= 48 && AscciCode <= 57)//if is number after number
+                        {
+                            state = 16;
+                            AuxLex += chain;
+                        }
+                        else
+                        {
+                            AuxLex += chain;
+                            Errors.Add(new Token("Lexico", AuxLex + " " + " no pertenece al alfabeto de fechas", -1, row, column, i - AuxLex.Length));
+                            AuxLex = "";
+                            state = 0;
+                        }
                         break;
                     default:
                         break;

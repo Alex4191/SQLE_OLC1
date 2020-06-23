@@ -145,6 +145,9 @@ namespace OLC1_SQL
 
         private void analyzeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+
+           
             String data = richTextBox1.Text;
             s.Analyze(data);
             Colors_Lex();
