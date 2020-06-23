@@ -41,6 +41,7 @@
             this.viewTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTokensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userGuideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +52,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.LightGray;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -76,6 +78,7 @@
             // 
             // newToolStripMenuItem
             // 
+            this.newToolStripMenuItem.Image = global::OLC1_SQL.Properties.Resources.icons8_color_48;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(133, 26);
             this.newToolStripMenuItem.Text = "New";
@@ -83,6 +86,7 @@
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.Image = global::OLC1_SQL.Properties.Resources.icons8_folder_40;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(133, 26);
             this.openToolStripMenuItem.Text = "Open";
@@ -90,6 +94,7 @@
             // 
             // saveToolStripMenuItem
             // 
+            this.saveToolStripMenuItem.Image = global::OLC1_SQL.Properties.Resources.fileIcon;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(133, 26);
             this.saveToolStripMenuItem.Text = "Save";
@@ -97,6 +102,7 @@
             // 
             // saveAsToolStripMenuItem
             // 
+            this.saveAsToolStripMenuItem.Image = global::OLC1_SQL.Properties.Resources.icons8_documents_folder_48;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(133, 26);
             this.saveAsToolStripMenuItem.Text = "Save as";
@@ -116,7 +122,8 @@
             this.loadTablesToolStripMenuItem,
             this.viewTablesToolStripMenuItem,
             this.showTokensToolStripMenuItem,
-            this.showDTreeToolStripMenuItem});
+            this.showDTreeToolStripMenuItem,
+            this.showErrorsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(56, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -124,34 +131,43 @@
             // analyzeToolStripMenuItem
             // 
             this.analyzeToolStripMenuItem.Name = "analyzeToolStripMenuItem";
-            this.analyzeToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.analyzeToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
             this.analyzeToolStripMenuItem.Text = "Analyze";
             this.analyzeToolStripMenuItem.Click += new System.EventHandler(this.analyzeToolStripMenuItem_Click);
             // 
             // loadTablesToolStripMenuItem
             // 
             this.loadTablesToolStripMenuItem.Name = "loadTablesToolStripMenuItem";
-            this.loadTablesToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.loadTablesToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
             this.loadTablesToolStripMenuItem.Text = "Load Tables";
             this.loadTablesToolStripMenuItem.Click += new System.EventHandler(this.loadTablesToolStripMenuItem_Click);
             // 
             // viewTablesToolStripMenuItem
             // 
             this.viewTablesToolStripMenuItem.Name = "viewTablesToolStripMenuItem";
-            this.viewTablesToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.viewTablesToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
             this.viewTablesToolStripMenuItem.Text = "View Tables";
+            this.viewTablesToolStripMenuItem.Click += new System.EventHandler(this.viewTablesToolStripMenuItem_Click);
             // 
             // showTokensToolStripMenuItem
             // 
             this.showTokensToolStripMenuItem.Name = "showTokensToolStripMenuItem";
-            this.showTokensToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.showTokensToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
             this.showTokensToolStripMenuItem.Text = "Show Tokens";
+            this.showTokensToolStripMenuItem.Click += new System.EventHandler(this.showTokensToolStripMenuItem_Click);
             // 
             // showDTreeToolStripMenuItem
             // 
             this.showDTreeToolStripMenuItem.Name = "showDTreeToolStripMenuItem";
-            this.showDTreeToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.showDTreeToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
             this.showDTreeToolStripMenuItem.Text = "Show D Tree";
+            // 
+            // showErrorsToolStripMenuItem
+            // 
+            this.showErrorsToolStripMenuItem.Name = "showErrorsToolStripMenuItem";
+            this.showErrorsToolStripMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.showErrorsToolStripMenuItem.Text = "Show Errors";
+            this.showErrorsToolStripMenuItem.Click += new System.EventHandler(this.showErrorsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -184,9 +200,9 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(29, 62);
+            this.richTextBox1.Location = new System.Drawing.Point(49, 63);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(1047, 596);
+            this.richTextBox1.Size = new System.Drawing.Size(1152, 596);
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
             // 
@@ -194,14 +210,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.BackColor = System.Drawing.Color.MediumSlateBlue;
             this.ClientSize = new System.Drawing.Size(1253, 699);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "OLC1 SQL";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Text = "SQL (Spanish Version)";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -229,6 +244,7 @@
         private System.Windows.Forms.ToolStripMenuItem showTokensToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showDTreeToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.ToolStripMenuItem showErrorsToolStripMenuItem;
     }
 }
 

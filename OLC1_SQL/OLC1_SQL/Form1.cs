@@ -26,10 +26,7 @@ namespace OLC1_SQL
             p = new Parser_201602880();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+       
 
 
 
@@ -149,25 +146,194 @@ namespace OLC1_SQL
         private void analyzeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             String data = richTextBox1.Text;
-            
             s.Analyze(data);
-            p.Parser(s.TokensArray);
-            if (s.Errors.Count != 0)
-
-            {
-                s.Html_Errores();
-                s.Html_Tokens();
-            }
-            else
-            {
-                s.Html_Tokens();
-            }
+            Colors_Lex();
+            p.Parser(s.TokensArray,s.Errors);
+            
            
         }
 
         private void loadTablesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "[OLC1]BAPA|*.bapa";
+            string row = "";
+            string text = "";
+            if (openFile.ShowDialog() == DialogResult.OK)
+            {
+                string path1 = openFile.FileName;
+                StreamReader strReader = new StreamReader(path1, System.Text.Encoding.UTF8);
+                string nameC = Path.GetFileNameWithoutExtension(openFile.FileName);
+                while ((row = strReader.ReadLine()) != null)
+                {
+                    text += row + System.Environment.NewLine;
+                }
+                richTextBox1.Text = text;
+                strReader.Close();
+                List_Paths.Clear();
+                List_Paths.Add(new Paths(path1, nameC));
 
+                actual_path = path1;
+                actual_name = nameC;
+                this.Text = actual_name;
+
+
+            }
+
+        }
+
+        public void Colors_Lex()
+        {
+            List<Token> TokensArray = s.TokensArray;
+            string word;
+            int index;
+            int sz;
+            for (int i = 0; i < TokensArray.Count; i++)
+            {
+                Token sen_pos = TokensArray.ElementAt(i);
+                word = sen_pos.getLexl();
+                switch (sen_pos.GetCorr())
+                {
+                    case 2://IDENTIFICADOR
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Brown;
+                        break;
+                    case 3://TIPO ENTERO
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.LightBlue;
+                        break;
+                    case 6:// TIPO FLOTANTE
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.LightBlue;
+                        break;
+                    case 5://TIPO CADENAS
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Green;
+                        break;
+                    case 4://TIPO FECHA
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Orange;
+                        break;
+                    case 10://MENOR
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Red;
+                        break;
+                    case 11://MAYOR
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Red;
+                        break;
+                    case 12://IGUAL
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Red;
+                        break;
+                    case 13://MAYOR IGUAL
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Red;
+                        break;
+                    case 14://MENOR IGUAL
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Red;
+                        break;
+                    case 15://DISTINTO
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Red;
+                        break;
+                    case 19://COMENTARIO
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.LightGray;
+                        break;
+                    case 20://COMENTARIO MULTIPLE
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.LightGray;
+                        break;
+                    case 26://TABLA
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Purple;
+                        break;
+                    case 27://INSERTAR
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Purple;
+                        break;
+                    case 30://ELIMINAR
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Purple;
+                        break;
+                    case 35://ACTUALIZAR
+                        index = sen_pos.getIndex_lex();
+                        sz = word.Length;
+                        richTextBox1.Select(index, sz);
+                        richTextBox1.SelectionColor = Color.Purple;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void showTokensToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (s.TokensArray.Count!= 0)
+            {
+                s.Html_Tokens();
+            }
+            else
+            {
+                MessageBox.Show("You must press the Anayze option first","Tokens Option");
+            }
+           
+
+           
+
+
+        }
+
+        private void showErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (p.Error_List.Count != 0)
+            {
+                s.Html_Errores(p.Error_List);
+            }
+            else
+            {
+                MessageBox.Show("Errors not founded","Error Option");
+            }
+        }
+
+        private void viewTablesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            p.ImprimirTablas();
         }
     }
 }
